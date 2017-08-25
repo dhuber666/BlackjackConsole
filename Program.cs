@@ -11,13 +11,9 @@ namespace BlackjackConsole
         static void Main(string[] args)
         {
 
-            Deck deck1 = new Deck();
+            Board board = new Board();
 
-            deck1.PrintCards();
-            deck1.Shuffle();
-            deck1.PrintCards();
-
-            Console.Read();
+            board.Play();
 
         }
     }

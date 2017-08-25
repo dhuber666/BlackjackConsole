@@ -6,40 +6,28 @@ using System.Threading.Tasks;
 
 namespace BlackjackConsole
 {
-    class Deck // this class contains an array of cards (52 in total)
+    public class Deck // this class contains an array of cards (52 in total)
     {
 
-        public List<Card> Cards { get; set; } = new List<Card>();
+        public List<Card> Cards { get;  set; } = new List<Card>();
         private const int _maxCards = 52;
         Random rng;
         
-
         public Deck()
         {
 
             // put 52 cards into the deck.
             rng = new Random();
-            
 
             foreach (var color in Enum.GetValues(typeof(CardColor))) // TODO Add also add the cards King, Queen, Junge (which also have values of 10)
             {
-                for (int i = 1; i <= 10; i++)
+                for (int i = 1; i <= 14; i++)
                 {
                     Cards.Add(new Card((CardColor)color, i));
                 }
             }
 
-            foreach (var color in Enum.GetValues(typeof(CardColor)))
-            {
-
-
-                Console.WriteLine(color);
-
-            }
-
-            
-        
-
+           
         }
 
         
@@ -53,19 +41,19 @@ namespace BlackjackConsole
             }
         }
 
-        public static void Shuffle<T>(this IList<T> ts)
-        {
-            var count = ts.Count;
-            var last = count - 1;
-            for (var i = 0; i < last; ++i)
-            {
-                var r = rng.Next(i, count); // TODO Auch hier Otto fragen wieso das nicht funktioniert
-                var tmp = ts[i];
-                ts[i] = ts[r];
-                ts[r] = tmp;
-            }
-        }
+        //public virtual Card GetFirstCard()
+        //{
+        //    Card temp = Cards[0]; // gets the first card from the list and save it into a variable
+        //    Cards.Remove(temp); // removes the card from the list
+        //    return temp; // returns the card drawn
 
-        
+        //}
+
+        //public virtual Card GetRandomCard()
+        //{
+        //    Card temp = Cards[rng.Next(0, Cards.Count())];
+        //    Cards.Remove(temp);
+        //    return temp;
+        //}
     }
 }

@@ -17,7 +17,7 @@ namespace BlackjackConsole
         Spade = 3
     }
 
-    class Card // this is the class that creates card objects (an array or list of that will later be stored into the deck class)
+    public class Card // this is the class that creates card objects (an array or list of that will later be stored into the deck class)
     {
 
         
@@ -31,6 +31,8 @@ namespace BlackjackConsole
             Color = cardColor;
             Value = value;
         }
+
+
 
         
 

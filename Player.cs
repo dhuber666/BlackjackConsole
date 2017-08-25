@@ -6,7 +6,56 @@ using System.Threading.Tasks;
 
 namespace BlackjackConsole
 {
-    class Player
+    public class Player
     {
+
+        public List<Card> Hand { get; private set; }
+        private string _name;
+
+
+        public Player(string name)
+
+        {
+            // at first the player has just an empty hand:
+            Hand = new List<Card>();
+            _name = name;
+        }
+
+        public void DisplayHand()
+        {
+            int totalValue = 0;
+     
+            foreach (Card card in Hand)
+            {
+                Console.Write("{0} - {1} and ",card.Value, card.Color);
+                totalValue += card.Value;
+            }
+
+            Console.WriteLine("-->Total value of {0}<--", totalValue);
+        }
+
+        // shows name of player
+
+        public string GetPlayerName()
+        {
+            return _name;
+        }
+
+        public int ComputeValue()
+        {
+            int valueTotal = 0;
+
+            foreach (Card card in Hand)
+            {
+                valueTotal += card.Value;
+            }
+
+            return valueTotal;
+        }
+
+        
+
+        
+
     }
 }
