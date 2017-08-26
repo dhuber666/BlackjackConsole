@@ -14,46 +14,71 @@ namespace BlackjackConsole
 
         private bool _playing = true;
 
-        
 
-        
+
+
+
+
         public void Play()
         {
 
             Console.Write("Welcome to Blackjack\n please tell us how much player will be playing the game: ");
             int userCount;
-            while(!int.TryParse(Console.ReadLine(), out userCount)) //this loop just asks again and again after it gets valid input
+            while (!int.TryParse(Console.ReadLine(), out userCount)) //this loop just asks again and again after it gets valid input
             {
                 Console.Write("Sorry that was not a valid input. It has to be a whole number. Please type it in again: ");
             }
+            Console.WriteLine("\n\nOk so {0} players in total. The dealer will now deal out the cards to every player in the game.\n", userCount);
+            TheDealer = new Dealer(userCount);
+            TheDealer.Shuffle();
+
 
             while (_playing)
             {
-                Console.WriteLine("\n\nOk so {0} players in total. The dealer will now deal out the cards to every player in the game.\n", userCount);
-                Console.WriteLine("Hang on tight, we are almost finished....Click enter to proceed");
-                Console.ReadLine();
-                TheDealer = new Dealer(userCount);
-                TheDealer.Shuffle();
+
+                // Empty the hands of the players, then redeal all the cards end start gaming 
+                // TODO: if you play a long time it can happen that the Dealer.Deck has no cards. If the Deck has 0 cards add a new one
+                TheDealer.EmptyHand();
                 TheDealer.DealCards();
-                PlayerTurns();
+                TheDealer.RoundOne = true;
+                PlayerTurns(); //Hack: if the player looses (burns himself) the player can still win when also the dealer burns himself
+                
+
                 TheDealer.RoundOne = false;
-                if(DealerTurn() == 0)
+                if (DealerTurn() == 0)
                 {
                     Console.WriteLine("Congratulations remaining players, you have won because the Dealer bruned himself (value higher then 21)");
-                } else { WinningCondition(TheDealer); }
-                
-                
+                }
+                else { WinningCondition(TheDealer); }
 
-                // Start a new round with the same players - reinstantiate the players array 
-
-
-
-                
-
-                
 
 
             }
+
+
+
+
+
+        
+
+
+                
+
+                
+
+
+            
+        }
+
+        public bool AllPlayersLost(List<Player> players)
+        {
+            foreach (Player player in players)
+            {
+                if (player.PlayerLost == false)
+                    return false;
+            }
+
+            return true;
         }
 
         public void WinningCondition(Dealer dealer)
@@ -110,7 +135,7 @@ namespace BlackjackConsole
             if(TheDealer.ComputeValue() == 17)
             {
                 return 17;
-            } else if (TheDealer.ComputeValue() > 21) //TODO: Computer has lost, say that all players who are currently in the game won and start a new round
+            } else if (TheDealer.ComputeValue() > 21) 
             {
                 return 0;
             } else if (TheDealer.ComputeValue() > 17 && TheDealer.ComputeValue() <= 21)
@@ -174,12 +199,14 @@ namespace BlackjackConsole
 
             if(player.ComputeValue() > 21)
             {
-                Console.WriteLine("Sorry you total value is {0}.\nYou are out", player.ComputeValue());  // TODO: Delete the user from the Player Array. After the winning condition is set and the game continues, put it back in. 
+                Console.WriteLine("Sorry you total value is {0}.\nYou are out", player.ComputeValue());
+                player.PlayerLost = true;
             } else
             {
                 Console.WriteLine("Your total value is {0}.\nWhat do you want to do next?", player.ComputeValue());
+                
                 NextAction(GetPlayerChoice(player), player);
-
+                
             }
         }
     }

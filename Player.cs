@@ -10,7 +10,10 @@ namespace BlackjackConsole
     {
 
         public List<Card> Hand { get; private set; }
+        public bool PlayerLost { get => _playerLost; set => _playerLost = value; }
+
         private string _name;
+        private bool _playerLost = false;
 
 
         public Player(string name)

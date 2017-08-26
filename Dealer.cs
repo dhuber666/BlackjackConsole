@@ -53,7 +53,7 @@ namespace BlackjackConsole
                 DealerHand.Add(Deck.GetFirstCard()); 
             }
         }
-
+        
 
         public void DealCards(Player player) // deals a new card to a specific player
         {
@@ -70,8 +70,18 @@ namespace BlackjackConsole
 
         public Card GetFirstCard()
         {
-            return Deck.GetFirstCard();
+            return this.Deck.GetFirstCard();
 
+        }
+
+        public void EmptyHand()
+        {
+            foreach (Player player in Players)
+            {
+                player.Hand.Clear();
+            }
+
+            DealerHand.Clear();
         }
 
         public string DisplaySingleCard(Card card)
@@ -98,7 +108,7 @@ namespace BlackjackConsole
         }
 
         //keep track if it's round one or not. 
-        public void DisplayHand()  // HACK fix this method. It's always showing just 1 card altough RoundOne is set to false in the Board class. 
+        public void DisplayHand()  
         {
             foreach (Card card in DealerHand)
             {
