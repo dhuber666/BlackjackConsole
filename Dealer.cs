@@ -111,6 +111,9 @@ namespace BlackjackConsole
                 } else if (DealerHand.IndexOf(card) == 1 && RoundOne == false)
                 {
                     Console.WriteLine("{0} - {1}\n", card.Value, card.Color);
+                } else if (DealerHand.IndexOf(card) == 0 && RoundOne == false)
+                {
+                    Console.WriteLine("{0} - {1}\n", card.Value, card.Color);
                 }
                     
             }
