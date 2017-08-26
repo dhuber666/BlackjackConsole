@@ -37,8 +37,14 @@ namespace BlackjackConsole
                 TheDealer.DealCards();
                 PlayerTurns();
                 TheDealer.RoundOne = false;
-                DealerTurn(); // TODO: Add a Dealer Turn --> Compute the algorithm if the dealer burns himself (he stops at 17 or more), he has a blackjack with an ace and a 10, he has to draw a new card if value < 17
-                TheDealer.DisplayHand();
+                if(DealerTurn() == 0)
+                {
+                    Console.WriteLine("Congratulations remaining players, you have won because the Dealer bruned himself (value higher then 21)");
+                } else { WinningCondition(TheDealer); }
+                
+                
+
+                // Start a new round with the same players - reinstantiate the players array 
 
 
 
@@ -50,6 +56,26 @@ namespace BlackjackConsole
             }
         }
 
+        public void WinningCondition(Dealer dealer)
+        {
+
+            foreach (Player player in dealer.Players)
+            {
+                if(player.ComputeValue() > TheDealer.ComputeValue())
+                {
+                    Console.WriteLine("Congratulation {0}, you won!", player.GetPlayerName()); // TODO: Add a bet system and give them the chips he won
+                } else if (player.ComputeValue() == TheDealer.ComputeValue())
+                {
+                    Console.WriteLine("It's a tie {0}, neither of you wins and you get back your bit", player.GetPlayerName());
+                } else
+                {
+                    Console.WriteLine("Sorry {0}, the Dealer has higher card then yours. You lost", player.GetPlayerName());
+                }
+            }
+
+
+
+        }
 
 
 
@@ -69,6 +95,32 @@ namespace BlackjackConsole
                 
                 NextAction(GetPlayerChoice(player), player);
             }
+
+        }
+
+        public int DealerTurn()
+        {
+            TheDealer.DisplayHand();
+
+            while(TheDealer.ComputeValue() < 17)
+            {
+                TheDealer.DealCardToDealer();
+            }
+
+            if(TheDealer.ComputeValue() == 17)
+            {
+                return 17;
+            } else if (TheDealer.ComputeValue() > 21) //TODO: Computer has lost, say that all players who are currently in the game won and start a new round
+            {
+                return 0;
+            } else if (TheDealer.ComputeValue() > 17 && TheDealer.ComputeValue() <= 21)
+            {
+                return TheDealer.ComputeValue();
+            }
+
+            return TheDealer.ComputeValue();
+            
+
 
         }
 
@@ -95,7 +147,6 @@ namespace BlackjackConsole
             player.DisplayHand();
             Console.WriteLine("\nThe dealers card(s): \n");
             TheDealer.DisplayHand();
-            
         }
 
         public void NextAction(int choice, Player player)
@@ -113,8 +164,6 @@ namespace BlackjackConsole
                 default:
                     break;
             }
-
-
         }
        
         public void DealCardTurn(Player player)
@@ -125,21 +174,13 @@ namespace BlackjackConsole
 
             if(player.ComputeValue() > 21)
             {
-                Console.WriteLine("Sorry you total value is {0}.\nYou are out", player.ComputeValue());
+                Console.WriteLine("Sorry you total value is {0}.\nYou are out", player.ComputeValue());  // TODO: Delete the user from the Player Array. After the winning condition is set and the game continues, put it back in. 
             } else
             {
                 Console.WriteLine("Your total value is {0}.\nWhat do you want to do next?", player.ComputeValue());
                 NextAction(GetPlayerChoice(player), player);
 
             }
-
-
         }
-       
-
-
-
-
-
     }
 }

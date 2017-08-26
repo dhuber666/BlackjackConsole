@@ -61,10 +61,22 @@ namespace BlackjackConsole
             player.Hand.Add(GetFirstCard());
         }
 
+        public void DealCardToDealer() // deals a new card to a specific player
+        {
+            Card tempCard = GetFirstCard();
+            DealerHand.Add(tempCard);
+            Console.WriteLine("Dealer drew a new card. It's {0}", DisplaySingleCard(tempCard));
+        }
+
         public Card GetFirstCard()
         {
             return Deck.GetFirstCard();
 
+        }
+
+        public string DisplaySingleCard(Card card)
+        {
+            return card.Value + " " + card.Color;
         }
 
 
@@ -85,8 +97,8 @@ namespace BlackjackConsole
      
         }
 
-
-        public void DisplayHand() // keep track if it's round one or not. 
+        //keep track if it's round one or not. 
+        public void DisplayHand()  // HACK fix this method. It's always showing just 1 card altough RoundOne is set to false in the Board class. 
         {
             foreach (Card card in DealerHand)
             {
@@ -95,13 +107,25 @@ namespace BlackjackConsole
                     Console.WriteLine("{0} - {1}\n", card.Value, card.Color);
                 } else if (DealerHand.IndexOf(card) == 1 && RoundOne == true)
                 {
-                    break;
+                    
                 } else if (DealerHand.IndexOf(card) == 1 && RoundOne == false)
                 {
                     Console.WriteLine("{0} - {1}\n", card.Value, card.Color);
                 }
                     
             }
+        }
+
+        public int ComputeValue()
+        {
+            int valueTotal = 0;
+
+            foreach (Card card in DealerHand)
+            {
+                valueTotal += card.Value;
+            }
+
+            return valueTotal;
         }
 
 
